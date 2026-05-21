@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Pipeline outputs
+results/
+*.parquet
+*.npz
+
+# Local regression fixture (built by tests/fixtures/make_regression_fixture.py)
+tests/fixtures/regression/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

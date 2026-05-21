@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gnssir-ice"
+version = "0.1.0"
+description = "GNSS-IR ice features tracked against an open-water baseline"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Joel Johnson" }]
+keywords = [
+    "GNSS-IR", "GNSS", "interferometric reflectometry",
+    "sea ice", "lake ice", "remote sensing", "geodesy",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
+dependencies = [
+    "numpy>=1.21,<3",
+    "pandas>=1.5,<3",
+    "scipy>=1.9,<2",
+    "scikit-learn>=1.1,<2",
+    "pyarrow>=8",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+viz = ["matplotlib>=3.5"]
+dev = ["pytest>=7", "pytest-cov", "ruff", "matplotlib>=3.5"]
+
+[project.urls]
+Homepage = "https://github.com/jjohnson2701/gnssir-ice"
+Repository = "https://github.com/jjohnson2701/gnssir-ice"
+
+[project.scripts]
+gnssir-ice = "gnssir_ice.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gnssir_ice"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "regression: end-to-end reproduction check (needs real data; opt-in)",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"

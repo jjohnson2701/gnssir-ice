@@ -1,0 +1,49 @@
+# gnssir-ice — worked example config (ROSS, Rossport, Lake Superior).
+# Copy this, edit the values, and run:  gnssir-ice run --config my_station.yaml
+station: ROSS
+
+coordinates:                        # optional provenance — unused by the model;
+  latitude_deg: 48.833729447        # recorded in the run manifest and the
+  longitude_deg: -87.519598801      # daily-output parquet metadata.
+  ellipsoidal_height_m: 149.835     # antenna height; only adds the diagnostic wse
+
+gnssir:                             # mirror your gnssrefl station JSON
+  e1: 5.0                           # min elevation (deg)
+  e2: 25.0                          # max elevation (deg)
+  minH: 2.0                         # reflector-height search min (m)
+  maxH: 8.0                         # reflector-height search max (m)
+  polyV: 4                          # detrend polynomial order
+  pele: [5, 30]                     # poly-fit elevation window (deg)
+  desiredP: 0.005                   # LSP RH grid step (m)
+
+baseline:
+  # Two month windows, one shared year list. open_water_months is the narrow,
+  # reliably ice-free window the Mahalanobis baseline is fit on; the wider
+  # normalization_months feeds the per-PRN and AF baselines (more arcs = more
+  # stable per-channel stats). Months have an ice-free-purity gradient, so two
+  # windows; a year is simply a good open-water year or not — one shared list.
+  open_water_months: [7, 8]                 # Mahalanobis fit window
+  normalization_months: [6, 7, 8, 9, 10]    # per-PRN / AF-baseline window
+  open_water_years: [2022, 2023, 2024, 2025]
+  pca_variance: 0.95
+  threshold_percentile: 99
+  af_baseline_max_arcs: null         # cap per AF baseline (null = use all arcs)
+  sector_width_deg: 30               # azimuth-sector width for per-sector scoring
+  min_sector_baseline_days: 20       # min open-water days for a sector baseline
+  ice_season_min_run_days: 5         # min consecutive above-threshold days/season
+
+processing:
+  years: [2022, 2023, 2024, 2025]
+
+paths:
+  refl_code: "${REFL_CODE}"          # gnssrefl root; snr + subdaily resolve under it
+  snr_filename: "{station_lower}{doy}0.{yy}.snr66"
+  snr_dir: "{refl_code}/{year}/snr/{station_lower}"
+  gnssir_output: "{refl_code}/{year}/results/{station_lower}"
+  subdaily_file: "{refl_code}/Files/{station_lower}/{station_lower}_{year}_subdaily_edit.txt.withrhdotIF"
+  output_root: "./results/{station}"
+
+options:
+  per_prn_normalization: true        # Stages 6/7 (rh_std_norm depends on this)
+  af_baseline: true                  # Stages 4/5 antenna-gain AF correction
+  min_subdaily_match_rate: 0.5       # build-arc-table fails below this match rate
