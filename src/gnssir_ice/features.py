@@ -28,8 +28,10 @@ from scipy.interpolate import interp1d
 
 from gnssir_ice.wavelet import cwt, morlet2
 
-# np.trapz is deprecated in NumPy 2.x in favour of np.trapezoid.
-_trapz = getattr(np, "trapezoid", np.trapz)
+# np.trapz was removed in recent NumPy 2.x; np.trapezoid is the replacement.
+# (getattr(np, "trapezoid", np.trapz) fails — the default is evaluated eagerly,
+# and np.trapz no longer exists to evaluate.)
+_trapz = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
 
 
 # ---------------------------------------------------------------------------
