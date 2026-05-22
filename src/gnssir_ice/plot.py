@@ -127,7 +127,7 @@ def plot_station(config: StationConfig, out: str | Path | None = None,
     except ImportError as exc:  # pragma: no cover - depends on optional extra
         raise RuntimeError(
             "plotting needs matplotlib — install with: "
-            "pip install 'gnssir-ice[viz]'") from exc
+            "pip install matplotlib") from exc
 
     resolver = PathResolver(config)
     mahal_path = resolver.daily_mahal_d()

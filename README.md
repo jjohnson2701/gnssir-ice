@@ -68,12 +68,20 @@ package — run it in whatever environment you already have.
 
 ## Install
 
+`gnssir-ice` is distributed from GitHub (not on PyPI):
+
 ```bash
-pip install gnssir-ice          # core
-pip install gnssir-ice[viz]     # + matplotlib, for the `plot` command
+pip install "git+https://github.com/jjohnson2701/gnssir-ice.git"
+
+# + matplotlib, for the `plot` command:
+pip install "gnssir-ice[viz] @ git+https://github.com/jjohnson2701/gnssir-ice.git"
+
 # or, from a checkout:
 pip install -e .[dev]
 ```
+
+Append `@<tag-or-commit>` to the URL to pin a version, e.g.
+`...gnssir-ice.git@d8d2a24`.
 
 ## Quick start
 
